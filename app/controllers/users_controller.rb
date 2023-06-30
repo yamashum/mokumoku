@@ -7,6 +7,9 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+    if @user.gender.nil?
+      @user.gender = :other
+    end
     if @user.save
       auto_login(@user)
       redirect_to events_path, success: 'ユーザー登録が完了しました'
@@ -17,6 +20,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:email, :name, :password, :password_confirmation)
+    params.require(:user).permit(:email, :name, :password, :password_confirmation, :gender)
   end
 end
